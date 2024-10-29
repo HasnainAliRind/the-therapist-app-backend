@@ -22,14 +22,15 @@ const verify_session = async (req, res) => {
             // Calculate payment age
             const paymentTime = new Date(paymentIntent.created * 1000); // Convert from seconds to milliseconds
             const now = new Date();
-            const hoursSincePayment = (now - paymentTime) / (1000 * 60 * 60);
+            const minutesSincePayment = (now - paymentTime) / (1000 * 60);
 
-            // Check if the payment was made within the last 24 hours
-            if (hoursSincePayment <= 24) {
-                return res.json({ verified: true, message: "Payment verified within last 24 hours." });
+            // Check if the payment was made within the last 5 minutes
+            if (minutesSincePayment <= 5) {
+                return res.json({ verified: true, message: "Payment verified within last 5 minutes." });
             } else {
-                return res.json({ verified: false, message: "Payment expired (made more than 24 hours ago)." });
+                return res.json({ verified: false, message: "Payment expired (made more than 5 minutes ago)." });
             }
+
         } else {
             return res.json({ verified: false, message: "Payment not completed or failed." });
         }
