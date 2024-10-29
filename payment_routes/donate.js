@@ -37,8 +37,8 @@ const donate = async (req, res) => {
 
 
         // Send the session ID back to the frontend to complete the checkout
-        res.json({ status: true, id: session.id });
-
+        return res.json({ status: true, id: session.id });
+    
     } catch (error) {
         console.error("Error creating Stripe session:", error);
         res.json({ status: false, error: "Failed to create Stripe session" });
