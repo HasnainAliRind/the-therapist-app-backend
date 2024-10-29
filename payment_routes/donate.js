@@ -8,6 +8,9 @@ const stripe = Stripe(process.env.STRIPE_SECRET);
 
 const donate = async (req, res) => {
     try {
+         let cancel_url = process.env.FRONTEND_CANCEL_URL;
+         let success_url = process.env.FRONTEND_SUCCESS_URL;
+   
         const { amount, user_email } = req.body;
         // Fixed amount for donation, $3 in cents (300 cents)
         const session = await stripe.checkout.sessions.create({
@@ -25,8 +28,8 @@ const donate = async (req, res) => {
                 },
             ],
             mode: "payment",
-            success_url: "https://the-therapist-beta.netlify.app/success?session_id={CHECKOUT_SESSION_ID}",
-            cancel_url: "https://the-therapist-beta.netlify.app/cancel",
+            success_url: `${success_url}?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: cancel_url,
             metadata: {
                 user_email: user_email
             }
